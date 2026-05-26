@@ -609,11 +609,14 @@ spec:
       if: ${{ parameters.hostType === 'GitLab' }}
       input:
         sourcePath: source
-        description: This is ${{ parameters.name }}
         repoUrl: ${{ parameters.gitlabServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}
         defaultBranch: ${{ parameters.branch }}
-        protectDefaultBranch: false
         repoVisibility: "public"
+        branches:
+          - name: ${{ parameters.branch }}
+            protect: true
+        settings:
+          description: This is ${{ parameters.name }}
     # SED_APP_SUPPORT_END
     # The final step is to register our new component in the catalog.
     - id: fetch-gitops-skeleton
@@ -752,11 +755,11 @@ spec:
       if: ${{ parameters.hostType === 'GitLab' }}
       input:
         sourcePath: gitops
-        description: This is GitOps repository for ${{ parameters.name }}
         repoUrl: ${{ parameters.gitlabServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}-gitops
         defaultBranch: "main"
-        protectDefaultBranch: false
         repoVisibility: "public"
+        settings:
+          description: This is GitOps repository for ${{ parameters.name }}
     - id: wait-for-github-repository
       name: Waiting for Repository Availability
       action: 'debug:wait'
